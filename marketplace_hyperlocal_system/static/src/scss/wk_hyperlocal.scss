@@ -1,0 +1,106 @@
+/* Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) */
+/* See LICENSE file for full copyright and licensing details. */
+/* License URL : https://store.webkul.com/license.html/ */
+
+.my_location
+{
+    font-size: 20px !important;
+    line-height: 1.9 !important;
+    color: white;
+    cursor: pointer;
+}
+#pac-input {
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 15px;
+    background-color: white;
+    background-image: url('/marketplace_hyperlocal_system/static/src/img/ic_search.svg');
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+}
+#pac-input:focus {
+    width: 99%;
+}
+.pac-container {
+    z-index: 99999;
+    width: 75%
+}
+// #hyperlocalmodal {
+//     padding-top: 12%;
+// }
+#selected-location {
+    cursor: pointer;
+    margin-left: 2px;
+    font-size: 13px;
+    color: white;
+    position: relative;
+    bottom: 5px;
+    display: inline;
+}
+#locationWarning {
+    z-index: 9999;
+}
+#address-for-shop {
+    background: #31374A;
+    min-height: 40px;
+    padding-left: 5%;
+}
+#wk_location {
+    color: #333333;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 10px;
+    margin-bottom: -3%;
+}
+#wk_header {
+    border-bottom:0px;
+}
+#wk_content {
+    padding: 3%;
+}
+#wk_close {
+    margin: -4%;
+}
+#wk_shop_btn{
+    color: #ffffff;
+    font-size: 14px;
+    border-radius: 4px;
+    background-color: #2c9b41;
+    box-shadow: 0px 1px 0.94px 0.06px rgba(0,0,0,0.24), 0px 0px 1.96px 0.04px rgba(0,0,0,0.16);
+
+}
+#wk_modal_content {
+    position: absolute;
+    z-index: 101;
+    top: 0px;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    text-align: center;
+    line-height: 2.5;
+    border-top: 4.5px solid #ff5151;
+}
+#wk_div_warning {
+    float: right;
+}
+#wk_btn_warning {
+    background: #2fa545;
+    color: #ffffff;
+    border-radius: 4px;
+    font-size: 14px;
+}
+#wk_btn_warning_close {
+    background: #fc6161;
+    color: #ffffff;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+@media screen and (min-width: 992px) {
+    #wk_modal_lg {
+        width: 1150px;
+    }
+}

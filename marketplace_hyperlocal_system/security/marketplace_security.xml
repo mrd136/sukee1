@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : https://store.webkul.com/license.html/ -->
+
+<odoo>
+	<data noupdate="0">
+
+		<!-- Seller Group Rules -->
+	    <record id="show_seller_ship_area_rule" model="ir.rule">
+	        <field name="name">Seller Shipping Area Only</field>
+	        <field name="model_id" ref="model_seller_ship_area"/>
+	        <field name="domain_force">[('seller_id','=',user.partner_id.id)]</field>
+	        <field name="groups" eval="[(4, ref('odoo_marketplace.marketplace_seller_group'))]"/>
+	    </record>
+	    <record id="show_seller_ship_rate_rule" model="ir.rule">
+	        <field name="name">Seller Shipping Rate Only</field>
+	        <field name="model_id" ref="model_seller_ship_rate"/>
+	        <field name="domain_force">[('name','=',user.partner_id.id)]</field>
+	        <field name="groups" eval="[(4, ref('odoo_marketplace.marketplace_seller_group'))]"/>
+	    </record>
+
+		<!-- Officer group rules -->
+	    <record id="officer_show_all_seller_ship_area_rule" model="ir.rule">
+	        <field name="name">Seller's Shipping Area Officer</field>
+	        <field name="model_id" ref="model_seller_ship_area"/>
+			<field name="domain_force">[(1,'=',1)]</field>
+			<field name="groups" eval="[(4, ref('odoo_marketplace.marketplace_officer_group'))]"/>
+	    </record>
+	    <record id="officer_show_all_seller_ship_rate_rule" model="ir.rule">
+	        <field name="name">Seller's Shipping Rate Officer</field>
+	        <field name="model_id" ref="model_seller_ship_rate"/>
+			<field name="domain_force">[(1,'=',1)]</field>
+			<field name="groups" eval="[(4, ref('odoo_marketplace.marketplace_officer_group'))]"/>
+	    </record>
+		
+
+	    <!-- Manager group rules -->
+	    <record id="show_all_seller_ship_area_rule" model="ir.rule">
+	        <field name="name">Seller's All Shipping Area</field>
+	        <field name="model_id" ref="model_seller_ship_area"/>
+	        <field name="domain_force">[(1,'=',1)]</field>
+	        <field name="groups" eval="[(4, ref('odoo_marketplace.marketplace_manager_group'))]"/>
+	    </record>
+	    <record id="show_all_seller_ship_rate_rule" model="ir.rule">
+	        <field name="name">Seller's All Shipping Rate</field>
+	        <field name="model_id" ref="model_seller_ship_rate"/>
+	        <field name="domain_force">[(1,'=',1)]</field>
+	        <field name="groups" eval="[(4, ref('odoo_marketplace.marketplace_manager_group'))]"/>
+	    </record>
+	</data>
+</odoo>

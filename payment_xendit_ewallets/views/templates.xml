@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : https://store.webkul.com/license.html/ -->
+<odoo>
+    <template id="assets_frontend" inherit_id="web.assets_frontend" name="Xendit Frontend Assets">
+        <xpath expr="." position="inside">
+        	<script type="text/javascript" src="/payment_xendit_ewallets/static/src/js/xendit_payment.js"></script>
+        </xpath>
+    </template>
+
+    <template id="xendit_ewallets_form">
+        <input type="hidden" name="data_set" t-att-data-action-url="tx_url" data-remove-me=""/>
+        <input type="hidden" name="xendit_error_msg" t-att-value="xendit_error_msg"/>
+        <input type="hidden" name="xendit_redirect_url" t-att-value="xendit_redirect_url"/>
+        <input type="hidden" name="xendit_wallet_type" t-att-value="xendit_wallet_type"/>
+        <input type="hidden" name="amount" t-att-value="amount"/>
+    </template>
+    
+</odoo>

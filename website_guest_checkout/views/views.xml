@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<template id="assets_frontend" name="website guest aassets_frontend" inherit_id="website.assets_frontend">
+		<xpath expr="." position="inside">
+			<script type="text/javascript" src="/website_guest_checkout/static/src/js/website_guest_checkout.js"></script>
+			<link rel="stylesheet" href="/website_guest_checkout/static/src/scss/website_guest_checkout.scss"></link>
+		</xpath>
+	</template>
+
+	<template id="website_guest_checkout_template" name="website guest checkout template" inherit_id="website_sale.cart">
+		<xpath expr="//div[hasclass('oe_cart')]//a[@href='/shop/checkout?express=1']" position="replace">
+			<t t-if="request.website.sudo().enable_guest">
+				<t t-call="website_guest_checkout.wk_btn_checkout"/>
+			</t>
+			<t t-else=''>
+				<a role="button" t-if="website_sale_order and website_sale_order.website_order_line" class="btn btn-primary float-right d-none d-xl-inline-block" href="/shop/checkout?express=1">
+					<span class="">Process Checkout</span>
+					<span class="fa fa-chevron-right" />
+				</a>
+			</t>
+		</xpath>
+		<xpath expr="//div[@id='o_cart_summary']//a[2]" position="replace">
+			<t t-if="request.website.sudo().enable_guest">
+				<t t-call="website_guest_checkout.wk_btn_checkout_2"/>
+			</t>
+			<t t-else=''>
+				<a role="button" t-if="website_sale_order and website_sale_order.website_order_line" class="btn btn-primary float-right" href="/shop/checkout?express=1">
+					<span class="">Process Checkout</span>
+					<span class="fa fa-chevron-right" />
+				</a>
+			</t>
+		</xpath>
+	</template>
+
+	<template id="website_guest_checkout_short_cart_summary" name="website guest checkout Cart Summary" inherit_id="website_sale.short_cart_summary">
+		<xpath expr="//a[@href='/shop/checkout?express=1']" position="replace">
+			<t t-if="request.website.sudo().enable_guest">
+				<div id='div_checkout'>
+					<a role="button" t-if="website_sale_order and website_sale_order.website_order_line" class="btn btn-secondary float-right d-none d-xl-inline-block" id="wk_guest_checkout" t-att-data-allow_uninvited="request.env['res.users']._get_signup_invitation_scope()" t-attf-data-uid="#{env.uid}" t-attf-data-p_uid="#{env.ref('base.public_user').id}" >
+						<span>Process Checkout</span>
+					</a>
+					<input type='hidden' name='wk_database' id="wk_database" t-att-value='request.db'/>
+					<input type="hidden" name="allow_signup" id="allow_signup"/>
+				</div>
+			</t>
+			<t t-else=''>
+				<a role="button" t-if="website_sale_order and website_sale_order.website_order_line" class="btn btn-secondary float-right d-none d-xl-inline-block" href="/shop/checkout?express=1">
+					<span>Process Checkout</span>
+				</a>
+			</t>
+		</xpath>
+	</template>
+
+	<template id="wk_btn_checkout">
+		<div id='div_checkout_main' class="pull-right mb32 col-md-4">
+			<a role="button" t-if="website_sale_order and website_sale_order.website_order_line" class="btn btn-primary float-right d-none d-xl-inline-block" id="wk_guest_checkout_main" t-att-data-allow_uninvited="request.env['res.users']._get_signup_invitation_scope()" t-attf-data-uid="#{env.uid}" t-attf-data-p_uid="#{env.ref('base.public_user').id}"			>
+				<span class="">Process Checkout</span>
+				<span class="fa fa-chevron-right" />
+			</a>
+			<input type='hidden' name='wk_database' id="wk_database" t-att-value='request.db'/>
+			<input type="hidden" name="allow_signup" id="allow_signup"/>
+		</div>
+	</template>
+
+	<template id="wk_btn_checkout_2">
+		<div id='div_checkout_main_2' class="pull-right mb32">
+			<a role="button" t-if="website_sale_order and website_sale_order.website_order_line" class="btn btn-primary float-right" id="wk_guest_checkout_main_2" t-att-data-allow_uninvited="request.env['res.users']._get_signup_invitation_scope()" t-attf-data-uid="#{env.uid}" t-attf-data-p_uid="#{env.ref('base.public_user').id}" href="/shop/checkout?express=1">
+				<span class="">Process Checkout</span>
+				<span class="fa fa-chevron-right" />
+			</a>
+			<input type='hidden' name='wk_database' id="wk_database_2" t-att-value='request.db'/>
+			<input type="hidden" name="allow_signup" id="allow_signup"/>
+		</div>
+	</template>
+
+</odoo>

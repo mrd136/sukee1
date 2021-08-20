@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<odoo>
+      <template id="wk_mp_hyperlocal_assets_frontend" inherit_id="website.assets_frontend" name="Hyperlocal">
+        <xpath expr="." position="inside">
+             <script src="/marketplace_hyperlocal_system/static/src/js/wk_hyperlocal.js" type="text/javascript"></script>
+             <link rel="stylesheet" type="text/scss" href="/marketplace_hyperlocal_system/static/src/scss/wk_hyperlocal.scss"/>
+            <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+        </xpath>
+    </template>
+    <template id="layout" inherit_id="website.layout" name="Web layout">
+        <xpath expr="//script" position="after">
+            <t t-set="google_api_key" t-value="request.website.sudo().google_maps_api_key"/>
+            <script t-attf-src="https://maps.googleapis.com/maps/api/js?key=#{google_api_key}&amp;libraries=places"/>
+        </xpath>
+    </template>
+
+    <template id="wk_layout_map_show" inherit_id="website.layout" name="Hyperlocal">
+        <!-- <xpath expr="//t[@t-set='html_data']" position="after"> -->
+        <xpath expr="//head/meta[last()]" position="after">
+            <t t-set="enable_hyperlocal" t-value="website.sudo().enable_hyperlocal" />
+            <div href="#hyperlocalmodal" id="address-for-shop" data-toggle="modal" t-if="enable_hyperlocal">
+                <i t-lang="en_US" class="material-icons my_location" style="display:none;">my_location</i>
+                <t t-set='deflocation' t-value="request.session.get('deflocation')"/>
+                <t t-if="deflocation">
+                    <div id="selected-location" style="display:none;"><t t-esc="deflocation"/></div>
+                </t>
+                <t t-if="not deflocation">
+                    <t t-set='def_address' t-value="website.sudo().def_address"/>
+                    <div id="selected-location" style="display:none;"><t t-esc="def_address"/></div>
+                </t>
+            </div>
+        </xpath>
+        <!-- <xpath expr="//nav[hasclass('navbar', 'navbar-expand-md', 'navbar-light', 'bg-light')]" position="before">
+            <t t-set="enable_hyperlocal" t-value="website.sudo().enable_hyperlocal" />
+            <t t-if="enable_hyperlocal">
+                <t t-call="marketplace_hyperlocal_system.h_warning"/>
+                <t t-call="marketplace_hyperlocal_system.h_location"/>
+            </t>
+        </xpath> -->
+        <xpath expr="//header" position="after">
+            <t t-set="enable_hyperlocal" t-value="website.sudo().enable_hyperlocal" />
+            <t t-if="enable_hyperlocal">
+                <t t-call="marketplace_hyperlocal_system.h_warning"/>
+                <t t-call="marketplace_hyperlocal_system.h_location"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="h_location" name="Hyperlocal">
+        <t t-set="website_sale_order" t-value="website.sale_get_order()" />
+        <div id="hyperlocalmodal" class="modal fade">
+            <div class="modal-dialog  modal-dialog-centered">
+                <div id="wk_content" class="modal-content">
+                    <div id="wk_header" class="modal-header">
+                        <button id="wk_close" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 id="wk_location" class="modal-title">Select Location</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form_goto_shop">
+                            <div class="form-group">
+                                <t t-set='deflocation' t-value="request.session.get('deflocation')"/>
+                                <t t-if="deflocation">
+                                    <input id="pac-input" autocomplete="off" class="controls" type="text" t-att-value="deflocation" placeholder="Search Box" required="required"/>
+                                </t>
+                                <t t-if="not deflocation">
+                                    <t t-set='def_address' t-value="website.sudo().def_address"/>
+                                    <input id="pac-input" class="controls" type="text" t-att-value="def_address" placeholder="Search Box" required="required"/>
+                                </t>
+                            </div>
+                            <div class="clearfix oe_login_buttons">
+
+                            <t t-if="not website_sale_order or not website_sale_order.cart_quantity">
+                                <button id="wk_shop_btn" type="button" class="btn pull-left wk_shop_btn_trigger" data-toggle="modal"
+                                    disabled="disabled">GO TO SHOP</button>
+                            </t>
+                            <t t-else="">
+                                <button id="wk_shop_btn" type="button" class="btn pull-left" data-toggle="modal"
+                                     data-target="#locationWarning" disabled="disabled">GO TO SHOP</button>
+                            </t>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="h_warning" name="Hyperlocal Warning">
+        <div class="modal fade" id="locationWarning" tabindex="-1" role="dialog" aria-labelledby="locationWarningTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" id="wk_modal_lg" role="document">
+                <div id="wk_modal_content" class="modal-content">
+                    <div class="modal-body">
+                        <b>Warning: </b>On location address change cart will empty.
+                        <div id="wk_div_warning">
+                            <!-- <a href="/get/lat/long">  -->
+                                <button type="button" id="wk_btn_warning" class="btn">OK</button>
+                            <!-- </a> -->
+                            <button type="button" id="wk_btn_warning_close" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+</odoo>

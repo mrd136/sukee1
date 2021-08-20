@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : https://store.webkul.com/license.html/ -->
+
+<odoo>
+	<record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.hyperlocal.marketplace</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="1"/>
+        <field name="inherit_id" ref="odoo_marketplace.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='mp_website_settings']" position="after">
+                <h2>Hyperlocal Settings</h2>
+                <div class="row mt16 o_settings_container" id="config_hyperlocal_marketplace_settings">
+                    <div class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <b><field name="enable_hyperlocal"/></b>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="enable_hyperlocal" string="Hyperlocal"/>
+                            <div class="text-muted">											⇒ Enable if you want to use hyperlocal feature.										</div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <label for="delivery_method"/>
+                            <div class="text-muted">											⇒ Input delivery which will use during checkout.										</div>
+                            <div class="text-muted">
+                                <b><field name="delivery_method" class="oe_inline"/></b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <label for="def_address"/>
+                            <div class="text-muted">											⇒ Input default address for all customers.										</div>
+                            <div class="text-muted">
+                                <b><field name="def_address" class="oe_inline"/></b>
+                            </div>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="longitude"/>
+                            <div class="text-muted">											⇒ Longitude will automatically fill based on based on the default location.										</div>
+                            <div class="text-muted">
+                                <b><field name="longitude" class="oe_inline"/></b>
+                            </div>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="latitude"/>
+                            <div class="text-muted">											⇒ Latitude will automatically fill based on based on the default location.										</div>
+                            <div class="text-muted">
+                                <b><field name="latitude" class="oe_inline"/></b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <label for="distance"/>
+                            <div class="text-muted">											⇒ Input distance for location.										</div>
+                            <div class="text-muted">
+                                <b><field name="distance" class="oe_inline"/></b>
+                            </div>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="radius_unit"/>
+                            <div class="text-muted">											⇒ Input radius unit for radius of the location.										</div>
+                            <div class="text-muted">
+                                <b><field name="radius_unit" class="oe_inline"/></b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box">
+                            <div class="o_setting_left_pane"/>
+                            <div class="o_setting_right_pane">
+                                    <label for="shipping_cost_type"/>
+                                    <div class="text-muted">											⇒ Select shipping cost type product wise or seller wise.										</div>
+                                    <div class="text-muted">
+                                            <b><field name="shipping_cost_type" class="oe_inline" required="1"/></b>
+                                    </div>
+                            </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

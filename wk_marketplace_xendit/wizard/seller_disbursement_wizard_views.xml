@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : https://store.webkul.com/license.html/ -->
+
+<odoo>
+	<data>
+        <record id="wk_seller_disbursement_wizard_form_view" model="ir.ui.view">
+            <field name="name">seller.disbursement.wizard.form</field>
+            <field name="model">seller.disbursement.wizard</field>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="payment_id" options="{'no_open':True}"/>
+                                <field name="seller_id" options="{'no_open':True}"/>
+                                <label for="amount"/>
+                                <div>
+                                    <field name="amount" class="oe_inline" widget="monetary" options="{'currency_field':'currency_id'}"/>
+                                    <field name="currency_id" style="margin-left: 5px;" invisible="1"/>
+                                </div>
+                                <field name="seller_xendit_account_id" domain="[('seller_id','=',seller_id)]"  options="{'no_create': True, 'no_open':True}"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+			          	<button name="confirm_seller_disbursement" string="Confirm" class="oe_highlight" type="object"/>
+			          	<button special="cancel" string="Cancel"/>
+			        </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

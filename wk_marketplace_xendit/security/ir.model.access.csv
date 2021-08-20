@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+xendit_seller_accounts_seller,xendit_seller_accounts_seller,model_xendit_seller_accounts,odoo_marketplace.marketplace_seller_group,1,1,1,1

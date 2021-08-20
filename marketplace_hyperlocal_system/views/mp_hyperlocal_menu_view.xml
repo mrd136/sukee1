@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : https://store.webkul.com/license.html/ -->
+
+<odoo>
+    <data>
+        <!-- Seller Hyperlocal Menus -->
+        <menuitem id="wk_seller_hyperlocal_menu1" name="Hyperlocal" parent="odoo_marketplace.wk_seller_dashboard" groups="odoo_marketplace.marketplace_seller_group" sequence="9"/>
+            <menuitem id="wk_seller_hyperlocal_menu1_sub_menu1" name="Shipping Area" parent="wk_seller_hyperlocal_menu1" action="marketplace_hyperlocal_system.wk_shipping_area_action" sequence="1" groups="odoo_marketplace.marketplace_seller_group"/>
+            <menuitem id="wk_seller_hyperlocal_menu1_sub_menu2" name="Ship Rate" parent="wk_seller_hyperlocal_menu1" action="marketplace_hyperlocal_system.wk_ship_rate_action" sequence="2" groups="odoo_marketplace.marketplace_seller_group"/>
+    </data>
+</odoo>

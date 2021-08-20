@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : https://store.webkul.com/license.html/ -->
+
+<odoo>
+    <data>
+        <record id="xendit_wk_seller_form_view" model="ir.ui.view">
+            <field name="name">xendit.seller.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="odoo_marketplace.wk_seller_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Xendit Payments" name="xendit_paments">
+                        <div style="margin-left: 20px;">
+                            <field name="enable_xendit_payments" nolabel="1"/>
+                            <label for="enable_xendit_payments" string="Accept Xendit Payments"/>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="xendit_email" attrs="{'invisible':[('enable_xendit_payments','!=',True)],'required':[('enable_xendit_payments','=',True)],'readonly':[('xendit_account_id','!=',False)]}"/>
+                                <field name="xendit_public_profile" attrs="{'invisible':[('enable_xendit_payments','!=',True)],'required':[('enable_xendit_payments','=',True)],'readonly':[('xendit_account_id','!=',False)]}"/>
+                                <field name="xendit_account_id" readonly="1" attrs="{'invisible':[('enable_xendit_payments','!=',True)]}"/>
+                                <field name="xendit_account_status" readonly="1" attrs="{'invisible':[('enable_xendit_payments','!=',True),('xendit_account_id','=',False)]}"/>
+                            </group>
+                            <group attrs="{'invisible':['|',('enable_xendit_payments','!=',True),('xendit_account_id','!=',False)]}">
+                                <button type="object" name="create_xendit_subaccount" string="Register On Xendit" class="oe_highlight"/>
+                            </group>
+                        </group>
+                        <group string="Account Details" attrs="{'invisible':[('enable_xendit_payments','!=',True)]}">
+                            <field name="seller_xendit_account_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="channel_type"/>
+                                    <field name="channel_code"/>
+                                    <field name="account_holder_name"/>
+                                    <field name="account_number"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="xendit_wk_seller_payment_form_view" model="ir.ui.view">
+            <field name="name">xendit.seller.payment</field>
+            <field name="model">seller.payment</field>
+            <field name="inherit_id" ref="odoo_marketplace.wk_seller_payment_form_view"/>
+            <field name="arch" type="xml">
+                <field name="company_id" position="after">
+                    <field name="is_xendit_payment" readonly="1" attrs="{'invisible':['|',('payment_type','!=','dr'),('payment_mode','!=','seller_payment')]}"/>
+                </field>
+                <button name="do_Confirm_and_view_invoice" position="attributes">
+                    <attribute name="attrs">{'invisible':['|',('is_xendit_payment','=',True)]}</attribute>
+                </button>
+                <xpath expr="//header" position="inside">
+                    <button type="object" name="pay_manually_in_odoo" string="Pay Manually" groups="odoo_marketplace.marketplace_officer_group" class="oe_highlight" attrs="{'invisible':[('is_xendit_payment','!=',True)]}"/>
+                    <button type="object" name="get_disbursement_wizard" string="Pay with Xendit" groups="odoo_marketplace.marketplace_officer_group" class="oe_highlight" attrs="{'invisible':['|',('is_xendit_payment','!=',True),('xendit_disbursement_id','!=',False)]}"/>
+                    <button type="object" name="retry_xendit_failed_payment" string="Retry with Xendit" groups="odoo_marketplace.marketplace_officer_group" class="oe_highlight" attrs="{'invisible':['|',('is_xendit_payment','!=',True),('xendit_disbursement_status','!=','FAILED')]}"/>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Xendit Details" name="xendit_details" attrs="{'invisible':['|',('is_xendit_payment','!=',True),('xendit_disbursement_id','=',False)]}">
+                        <group>
+                            <group>
+                                <field name="xendit_disbursement_id" readonly="1"/>
+                                <field name="xendit_disbursement_status" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="xendit_channel_code" readonly="1"/>
+                                <field name="xendit_account_holder_name" readonly="1"/>
+                                <field name="xendit_account_number" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="xendit_disbursement_failed_msg" readonly="1" attrs="{'invisible': [('xendit_disbursement_status','!=','FAILED')]}"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="xendit_wk_seller_payment_form_view_for_manager" model="ir.ui.view">
+            <field name="name">xendit.seller.payment.manager</field>
+            <field name="model">seller.payment</field>
+            <field name="inherit_id" ref="xendit_wk_seller_payment_form_view"/>
+            <field name="groups_id" eval="[(6, 0, [ref('odoo_marketplace.marketplace_manager_group') ])]"/>
+            <field name="arch" type="xml">
+                <field name='is_xendit_payment' position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="xendit_seller_payment_filter" model="ir.ui.view">
+            <field name="name">Xendit Seller Filter</field>
+            <field name="model">seller.payment</field>
+            <field name="inherit_id" ref="odoo_marketplace.seller_payment_filter"/>
+            <field name="arch" type="xml">
+                <field name="date" position="after">
+                    <field name="is_xendit_payment"/>
+                    <field name="xendit_disbursement_id"/>
+                    <field name="xendit_disbursement_status"/>
+                    <filter string="Xendit All Transactions" name="xendit_all_tx_filter"  domain="[('is_xendit_payment','=',True),('xendit_disbursement_id','!=',False)]" help="Filter all transactions created through xendit."/>
+                    <filter string="Xendit Confirmed Transactions" name="xendit_completed_tx_filter"  domain="[('is_xendit_payment','=',True),('xendit_disbursement_id','!=',False),('xendit_disbursement_status','=','COMPLETED')]" help="Filter all completed transactions created through xendit."/>
+                    <separator/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

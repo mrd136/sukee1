@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : <https://store.webkul.com/license.html/> -->
+
+<odoo>
+    <template id="wk_show_website_info_inherit" inherit_id="website.show_website_info">   <!--need to do this -->
+         <xpath expr="//div[@class='oe_structure']//section//h1[1]/small" position="replace"></xpath>
+         <xpath expr="//div[@class='oe_structure']//section//p[1]" position="replace"></xpath>
+    </template>
+
+    <template id="s_text_image" inherit_id="website.s_text_image">    <!--Add this-->
+        <xpath expr="//img[@class='img img-fluid mx-auto']" position="attributes">
+            <attribute name="alt">Text and image block</attribute>
+        </xpath>
+    </template>
+
+    <template id="s_image_text" inherit_id="website.s_image_text">    <!--Add this-->
+        <xpath expr="//img[@class='img img-fluid mx-auto']" position="attributes">
+            <attribute name="alt">Image and text block</attribute>
+        </xpath>
+    </template>
+
+    <template id="s_three_columns" inherit_id="website.s_three_columns">   <!--Add this-->
+        <xpath expr="//img[@src='/web/image/website.library_image_11']" position="attributes">
+            <attribute name="alt">Sample 1 for three columns</attribute>
+        </xpath>
+         <xpath expr="//img[@src='/web/image/website.library_image_13']" position="attributes">
+            <attribute name="alt">Sample 2 for three columns</attribute>
+        </xpath>
+         <xpath expr="//img[@src='/web/image/website.library_image_07']" position="attributes">
+            <attribute name="alt">Sample 3 for three columns</attribute>
+        </xpath>
+    </template>
+
+    <template id="brand_promotion" inherit_id="website.brand_promotion">
+        <xpath expr="//t[@t-call='web.brand_promotion_message']" position="replace">
+            <t t-call="web.brand_promotion_message">
+                <t t-set="_message">
+                </t>
+                <t t-set="_utm_medium">portal</t>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="odoo_promotion" inherit_id="web.brand_promotion_message">
+        <xpath expr="//t[@t-set='odoo_logo']" position="replace">
+            <t>
+                <a target="_blank"
+                class="badge badge-light">
+                </a>
+            </t>
+        </xpath>
+        <xpath expr="//t[@t-set='final_message']" position="replace">
+             <t t-set="final_message"></t>
+        </xpath>
+        <xpath expr="//t[3]" position="replace">
+            <t></t>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_website_guest_checkout" model="ir.ui.view">
+            <field name="name">website guest checkout</field>
+            <field name="model">website.guest.checkout</field>
+            <field name="arch" type="xml">
+                <form string="Configure Terms and Condition" class="oe_form_configuration">
+                    <group>
+                        <field name='website_id'/>
+                    </group>
+                    <group string='Website Guest Checkout'>
+                        <group>
+                            <field name='enable_guest' />
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_guest_checout" model="ir.actions.act_window">
+            <field name="name">Configure Website</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">website.guest.checkout</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

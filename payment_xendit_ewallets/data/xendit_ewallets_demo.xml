@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : https://store.webkul.com/license.html/ -->
+<odoo>
+    <data noupdate="1">
+
+        <record id="payment_acquirer_xendit_ewallets" model="payment.acquirer">
+            <field name="name">Xendit eWallets</field>
+            <!-- <field name="image_128" type="base64" file="payment_xendit_cards/static/src/img/xendit_icon.png"/> -->
+            <field name="provider">xendit_ewallets</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="state">test</field>
+            <field name="xendit_wallet_type">PH_PAYMAYA</field>
+            <field name="xendit_public_key">demo</field>
+            <field name="xendit_secret_key">demo</field>
+            <!-- <field name="token_implemented">False</field> -->
+            <field name="view_template_id" ref="xendit_ewallets_form"/>
+        </record>
+
+    </data>
+</odoo>

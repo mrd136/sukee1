@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : https://store.webkul.com/license.html/ -->
+<odoo>
+    <data noupdate="1">
+
+        <record id="payment_acquirer_xendit_Cards" model="payment.acquirer">
+            <field name="name">Xendit Cards</field>
+            <!-- <field name="image_128" type="base64" file="payment_xendit_cards/static/src/img/xendit_icon.png"/> -->
+            <field name="provider">xendit_cards</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="payment_flow">s2s</field>
+            <field name="state">test</field>
+            <field name="xendit_public_key">demo</field>
+            <field name="xendit_secret_key">demo</field>
+            <!-- <field name="token_implemented">False</field> -->
+            <field name="registration_view_template_id" ref="xendit_cards_s2s_form"/>
+        </record>
+
+    </data>
+</odoo>

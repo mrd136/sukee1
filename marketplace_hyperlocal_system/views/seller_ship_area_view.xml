@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : https://store.webkul.com/license.html/ -->
+<odoo>
+    <data>
+        <record id="mp_seller_ship_area_view_webkul" model="ir.ui.view">
+            <field name="name">seller.ship.area.tree</field>
+            <field name="model">seller.ship.area</field>
+            <field name="arch" type="xml">
+                <tree string="Seller Ship Area">
+                    <field name="seller_id"/>
+                    <field name="name"/>
+                    <field name="latitude"/>
+                    <field name="longitude"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="mp_seller_ship_area_view_form" model="ir.ui.view">
+            <field name="name">seller.ship.area.form</field>
+            <field name="model">seller.ship.area</field>
+            <field name="arch" type="xml">
+                <form string="Seller Ship Area">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="seller_id"
+                                    required="1"
+                                    string="Seller"
+                                    groups="odoo_marketplace.marketplace_officer_group"
+                                    domain="[('seller','=',True), ('state','=','approved')]"
+                                    options="{'no_create': True, 'no_create_edit': True}"
+                                    context="{'form_view_ref': 'odoo_marketplace.wk_seller_form_view'}"
+                                />
+                            </group>
+                            <group>
+                                <field name="latitude"/>
+                                <field name="longitude"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="group_shipping_area" model="ir.ui.view">
+            <field name="name">filter.seller.ship.area</field>
+            <field name="model">seller.ship.area</field>
+            <field name="arch" type="xml">
+                <search string="Seller">
+                    <group expand="0" string="Group By">
+                        <filter name="group_seller" string="Seller" icon="terp-product" context="{'group_by':'seller_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="wk_shipping_area_action" model="ir.actions.act_window">
+            <field name="name">Seller Ship Area</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">seller.ship.area</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_group_seller': 1}</field>
+        </record>
+    </data>
+</odoo>

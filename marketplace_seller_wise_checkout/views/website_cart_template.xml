@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : https://store.webkul.com/license.html/ -->
+<odoo>
+    <template id="inherit_mycart_header" inherit_id="website_sale.header" name="Header Shop My Cart Link">
+        <xpath expr="//header//ul[@id='top_menu']//a[@href='/shop/cart']/." position="replace">
+            <t t-set="website_sale_order" t-value="request.env['website'].sudo().get_admin_so_ids()" />
+            <t t-set="seller_so_ids" t-value="request.website.get_seller_so_ids()"/>
+            <t t-if="seller_so_ids" t-set="seller_so" t-value="seller_so_ids.filtered(lambda o: len(o.website_order_line)>0)"/>
+            <t t-else="" t-set="seller_so" t-value="False"/>
+            <li id="my_cart" t-attf-class="nav-item#{'' if website_sale_order and website_sale_order.exists() and website_sale_order.cart_quantity or seller_so else ' d-none'}">
+                <a href="/shop/cart" class="nav-link">
+                    <i class="fa fa-shopping-cart"></i>
+                    My Cart
+                    <t t-set="admin_cart_qty" t-value="website_sale_order and website_sale_order.exists() and website_sale_order.cart_quantity or 0"/>
+                    <t t-set="seller_cart_qty" t-value="seller_so and sum(seller_so.mapped('cart_quantity')) or 0"/>
+                    <t t-set="total_qty" t-value="admin_cart_qty + seller_cart_qty"/>
+                    <sup t-attf-class="my_cart_quantity badge badge-primary" t-esc="total_qty or ''" />
+                </a>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="checkout_inherit_cart_lines" inherit_id="website_sale.cart_lines" name="Checkout Shopping Cart Lines">
+        <xpath expr="//a[hasclass('js_delete_product')]" position="attributes">
+            <attribute name="style">white-space:nowrap</attribute>
+        </xpath>
+        <xpath expr="//div[1]" position="replace">
+            <t t-if="seller_so_ids" t-set="seller_so" t-value="seller_so_ids.filtered(lambda o: len(o.website_order_line)>0)"/>
+            <t t-else="" t-set="seller_so" t-value="False"/>
+            <t t-set="website_so" t-value="True if website_sale_order.website_order_line else False"/>
+            <div t-if="not website_so and not seller_so" class="js_cart_lines alert alert-info">
+              Your cart is empty!
+            </div>
+        </xpath>
+    </template>
+
+    <template id="mp_checkout_inherit_cart" inherit_id="website_sale.cart" name="Shopping Cart">
+        <xpath expr="//t/div[@id='wrap']//div[hasclass('oe_cart')]" position="attributes">
+            <attribute name="id">admin_cart</attribute>
+            <attribute name="class" add="mt8" separator=" "/>
+        </xpath>
+        <xpath expr="//div[@id='o_cart_summary']" position="attributes">
+            <attribute name="class" add="mt8" separator=" "/>
+        </xpath>
+        <xpath expr="//t/div[@id='wrap']//div[hasclass('col-lg-12')]/.." position="before">
+            <t t-if="seller_so_ids" t-set="one" t-value="seller_so_ids.filtered(lambda o: len(o.website_order_line)>0)"/>
+            <t t-else="" t-set="one" t-value="False"/>
+            <t t-set="two" t-value="True if website_sale_order.website_order_line else False"/>
+        </xpath>
+        <xpath expr="//t/div[@id='wrap']//div[hasclass('col-lg-12')]/.." position="attributes">
+            <attribute name="t-att-class">'row card' if two else 'row'</attribute>
+        </xpath>
+        <xpath expr="//t/div[@id='wrap']//a[@href='/shop']" position="attributes">
+            <attribute name="t-att-class">'btn btn-secondary mb32 d-none d-xl-inline-block' if two or not one and not two else 'btn btn-secondary mb32 d-none'</attribute>
+        </xpath>
+        <xpath expr="//t/div[@id='wrap']" position="inside">
+            <t t-if="seller_so_ids" t-set="seller_so_ids" t-value="seller_so_ids.filtered(lambda o: len(o.website_order_line)>0)"/>
+            <t t-if="seller_so_ids">
+                <div class="container oe_website_sale">
+                    <div class="oe_cart">
+                        <div class="row">
+                            <t t-foreach="seller_so_ids" t-as="so">
+                                <t t-set="website_sale_order" t-value="so"/>
+                                    <div t-att-id="'%s_cart%s' % (so.marketplace_seller_id.name, so.marketplace_seller_id.id)" class="col-xl-8 col-12 o_website_sale_rightfit mb32 card card-default"  style="padding:10px;padding-bottom:45px;">
+                                        <a t-attf-href="/seller/profile/#{so.sudo().marketplace_seller_id.url_handler if so.sudo().marketplace_seller_id.url_handler else so.sudo().marketplace_seller_id.id}" title="View Seller Profile" target="new">
+                                            <h2 class="mb8 mt8" style="margin-top:0px !important"><t t-esc="so.marketplace_seller_id.name"/> Cart</h2>
+                                        </a>
+                                        <t t-if="website_sale_order" t-set="suggested_products" t-value="website_sale_order._cart_accessories()"/>
+                                        <t t-call="website_sale.cart_lines"/>
+                                        <div class="clearfix" />
+                                        <a role="button" href="/shop" class="btn btn-secondary d-none d-xl-inline-block">
+                                            <span class="fa fa-chevron-left" />
+                                            <span class="">Continue Shopping</span>
+                                        </a>
+                                        <a role="button" t-if="website_sale_order and website_sale_order.website_order_line" class="btn btn-primary float-right d-none d-xl-inline-block"
+                                            t-att-href="'/shop/checkout?express=1&amp;seller=%s' % so.marketplace_seller_id.id">
+                                            <span class="">Process Checkout</span>
+                                            <span class="fa fa-chevron-right" />
+                                        </a>
+                                        <div class="oe_structure" id="oe_structure_website_sale_cart_1"/>
+                                    </div>
+                                    <div class="col-12 col-xl-4 mt16">
+                                        <t t-call="website_sale.short_cart_summary"/>
+                                        <div class="d-xl-none mt8">
+                                        <a role="button" href="/shop" class="btn btn-secondary mb32">
+                                                <span class="fa fa-chevron-left" />
+                                                Continue<span class="d-none d-md-inline"> Shopping</span>
+                                            </a>
+                                            <a role="button" t-if="website_sale_order and website_sale_order.website_order_line" class="btn btn-primary float-right"
+                                                t-att-href="'/shop/checkout?express=1&amp;seller=%s' % so.marketplace_seller_id.id">
+                                                <span class="">Process Checkout</span>
+                                                <span class="fa fa-chevron-right" />
+                                            </a>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    <div class="oe_structure" />
+                </div>
+            </t>
+        </xpath>
+        <xpath expr="//t/div[@id='wrap']//div[hasclass('o_website_sale_rightfit')]" position="attributes">
+            <attribute name="t-att-class">'mb32 mt16 card card-default col-12 col-xl-8 d-inline-block' if website_sale_order and website_sale_order.website_order_line else ''</attribute>
+        </xpath>
+        <xpath expr="//t/div[@id='wrap']//div[hasclass('o_website_sale_rightfit')]//h2" position="attributes">
+            <attribute name="class">text-primary mb8</attribute>
+            <attribute name="style"> margin-top:0px !important</attribute>
+            <attribute name="t-if">website_sale_order and website_sale_order.website_order_line</attribute>
+        </xpath>
+    </template>
+
+    <template id="mp_checkout_inherit_short_cart_summary" inherit_id="website_sale.short_cart_summary">
+        <xpath expr="//t[@t-call='website_sale.total']" position="inside">
+            <t t-set='hide_coupon'>True</t>
+        </xpath>
+        <xpath expr="//a[@href='/shop/checkout?express=1']" position="attributes">
+            <attribute name="t-att-href">'/shop/checkout?express=1&amp;seller=%s' % website_sale_order.marketplace_seller_id.id</attribute>
+        </xpath>
+    </template>
+
+    <template id="mp_checkout_inherit_cart_popover" inherit_id="website_sale.cart_popover" name="Mp Checkout Cart Popover">
+        <xpath expr="//div[1]" position="replace">
+            <t t-if="seller_so_ids" t-set="seller_so"
+                t-value="seller_so_ids.filtered(lambda o: len(o.website_order_line)>0)"/>
+            <t t-else="" t-set="seller_so" t-value="False"/>
+            <t t-set="website_so" t-value="True if website_sale_order.website_order_line else False"/>
+            <div t-if="not seller_so and not website_so" class="alert alert-info">
+                Your cart is empty!
+            </div>
+        </xpath>
+        <xpath expr="//t[@t-if='website_sale_order and website_sale_order.website_order_line']" position="after">
+            <t t-if="seller_so_ids">
+                <t t-foreach="seller_so_ids" t-as="so">
+                    <t t-set="website_sale_order" t-value="so"/>
+                    <t t-if="website_sale_order and website_sale_order.website_order_line">
+                        <div class="mt16 mb16 card p-2">
+                            <h4 style="margin-top:0px;">Product from <t t-esc="so.marketplace_seller_id.name"/></h4>
+                            <t t-foreach="website_sale_order.website_order_line" t-as="line">
+                                <div class="row mb8 cart_line ml0 mr0">
+                                    <div class="col-3 text-center">
+                                        <span t-field="line.product_id.image_128" t-options="{'widget': 'image', 'qweb_img_responsive': False, 'class': 'rounded o_image_64_max mb-2'}" />
+                                    </div>
+                                    <div class="col-9">
+                                        <div>
+                                            <t t-call="website_sale.cart_line_product_link">
+                                                <span class="h6" t-esc="line.name_short" />
+                                            </t>
+                                        </div>
+                                        Qty: <t t-esc="int(line.product_uom_qty) == line.product_uom_qty and int(line.product_uom_qty) or line.product_uom_qty" />
+                                    </div>
+                                </div>
+                            </t>
+                            <div class="text-center">
+                                <span class="h6">
+                                    <t t-call="website_sale.total">
+                                        <t t-set='hide_coupon'>True</t>
+                                    </t>
+                                </span>
+                                <a role="button" class="btn btn-primary" t-att-href="'/shop/cart#%s_cart%s' % (so.marketplace_seller_id.name, so.marketplace_seller_id.id)">
+                                   View Cart (<t t-esc="website_sale_order.cart_quantity" /> items)
+                                 </a>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </xpath>
+        <xpath expr="//t[@t-if='website_sale_order and website_sale_order.website_order_line']" position="replace">
+            <t t-if="website_sale_order and website_sale_order.website_order_line">
+                <div class="mt16 mb16 card p-2">
+                    <h4 style="margin-top:0px;">My Cart </h4>
+                    <t t-foreach="website_sale_order.website_order_line" t-as="line">
+                        <div class="row mb8 cart_line ml0 mr0">
+                            <div class="col-3 text-center">
+                                <span t-field="line.product_id.image_128" t-options="{'widget': 'image', 'qweb_img_responsive': False, 'class': 'rounded o_image_64_max mb-2'}" />
+                            </div>
+                            <div class="col-9">
+                                <div>
+                                    <t t-call="website_sale.cart_line_product_link">
+                                        <span class="h6" t-esc="line.name_short" />
+                                    </t>
+                                </div>
+                                Qty: <t t-esc="int(line.product_uom_qty) == line.product_uom_qty and int(line.product_uom_qty) or line.product_uom_qty" />
+                            </div>
+                        </div>
+                    </t>
+                    <div class="text-center">
+                        <span class="h6">
+                            <t t-call="website_sale.total">
+                                <t t-set='hide_coupon'>True</t>
+                            </t>
+                        </span>
+                        <a role="button" class="btn btn-primary" href="/shop/cart">
+                            View Cart (<t t-esc="website_sale_order.cart_quantity" /> items)
+                        </a>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>

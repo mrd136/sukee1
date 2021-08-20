@@ -1,0 +1,21 @@
+<odoo>
+    <data>
+        <!-- website views -->
+        <record id="inherit_mp_config_view_website_form" model="ir.ui.view">
+            <field name="name">website.form.mp.inherit</field>
+            <field name="model">website</field>
+            <field name="inherit_id" ref="odoo_marketplace.mp_config_view_website_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@groups='odoo_marketplace.marketplace_manager_group']" position="inside">
+                    <group string="Hyperlocal Settings" name="seller_hyperlocal" col="4">
+                        <field name="enable_hyperlocal" help="Enable if you want to use hyperlocal feature."/>
+                        <field name="distance" help="Input delivery which will use during checkout."/>
+                        <field name="def_address" help="Input default address for all customers."/>
+                        <field name="latitude" help="Longitude will automatically fill based on based on the default location."/>
+                        <field name="longitude" help="Latitude will automatically fill based on based on the default location."/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

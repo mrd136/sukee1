@@ -1,0 +1,19 @@
+#div_checkout{
+	position:  relative;
+
+}
+.guest-checkout-popover{
+  max-width: 500px !important;;
+  min-width: 150px !important;;
+}
+.check_login_error{
+    max-width: 240px;
+    color: #dc3545;
+}
+@media(max-width: 400px) {
+	.guest-checkout-popover{
+  		left:0px !important;
+		width: 95vw;
+		right: 2vw;
+  }
+}

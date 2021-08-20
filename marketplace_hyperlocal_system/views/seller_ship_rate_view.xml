@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : https://store.webkul.com/license.html/ -->
+<odoo>
+    <data>
+
+        <record id="mp_seller_ship_rate_view_webkul" model="ir.ui.view">
+            <field name="name">seller.ship.rate.tree</field>
+            <field name="model">seller.ship.rate</field>
+            <field name="arch" type="xml">
+                <tree string="Seller Ship Rate">
+                    <field name="name"/>
+                    <field name="distance_from"/>
+                    <field name="distance_to"/>
+                    <field name="weight_from"/>
+                    <field name="weight_to"/>
+                    <field name="cost"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="mp_seller_ship_rate_view_form" model="ir.ui.view">
+            <field name="name">seller.ship.rate.form</field>
+            <field name="model">seller.ship.rate</field>
+            <field name="arch" type="xml">
+                <form string="Seller Ship Rate">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"
+                                    required="1"
+                                    string="Seller"
+                                    groups="odoo_marketplace.marketplace_officer_group"
+                                    domain="[('seller','=',True), ('state','=','approved')]"
+                                    options="{'no_create': True, 'no_create_edit': True}"
+                                    context="{'form_view_ref': 'odoo_marketplace.wk_seller_form_view'}"
+                                />
+                                <field name="weight_from"/>
+                                <field name="weight_to"/>
+                                <field name="cost"/>
+                            </group>
+                            <group>
+                                <field name="distance_from"/>
+                                <field name="distance_to"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="group_shipping_rate" model="ir.ui.view">
+            <field name="name">filter.seller.ship.rate</field>
+            <field name="model">seller.ship.rate</field>
+            <field name="arch" type="xml">
+                <search string="Seller">
+                    <group expand="0" string="Group By">
+                        <filter name="group_seller_id" string="Seller" icon="terp-product" context="{'group_by':'name'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="wk_ship_rate_action" model="ir.actions.act_window">
+            <field name="name">Seller Ship Rate</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">seller.ship.rate</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_group_seller_id': 1}</field>
+            <field name="help" type="html">
+                <p>
+                    <b><u>To import csv for seller ship rate follow these steps.</u></b>
+                </p>
+                <p>
+                    <b><a href="/marketplace_hyperlocal_system/static/src/csv/sample.csv">Click here to download sample csv.</a></b>
+                </p>
+                <p>Step 1 Click on import button</p>
+                <p>
+                    <img src="/marketplace_hyperlocal_system/static/src/img/csvimport.png" class="pull-left" style="width: 150%;margin-top: 10px;margin-bottom: 20px;"/>
+                </p>
+                <p>Step 2 Load csv</p>
+                <p>
+                    <img src="/marketplace_hyperlocal_system/static/src/img/loadcsv.png" class="pull-left" style="width: 150%;margin-top: 10px;margin-bottom: 20px;"/>
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>
